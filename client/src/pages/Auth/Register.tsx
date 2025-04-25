@@ -1,10 +1,9 @@
-"use client"
-
+import axios from "axios"
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Axis3DIcon, Check, ChevronsUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -126,8 +125,9 @@ export default function Register() {
   })
 
   // Handle form submission
-  function onSubmit(data: FormValues) {
-    console.log("Form submitted with data:", data)
+  async function onSubmit(data: FormValues) {
+   let result = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user-api/register`, data)
+   console.log(result.data)
   }
 
   // Handle user type change
@@ -458,7 +458,7 @@ export default function Register() {
                                   !field.value?.length && "text-muted-foreground",
                                 )}
                               >
-                                {field.value?.length > 0
+                                {field.value?.length && field.value.length > 0
                                   ? `${field.value.length} certifications selected`
                                   : "Select certifications"}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -728,7 +728,7 @@ export default function Register() {
                                   !field.value?.length && "text-muted-foreground",
                                 )}
                               >
-                                {field.value?.length > 0
+                                {field.value?.length && field.value.length > 0
                                   ? `${field.value.length} certifications selected`
                                   : "Select certifications"}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

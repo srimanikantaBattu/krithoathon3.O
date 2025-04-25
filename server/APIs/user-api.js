@@ -6,10 +6,17 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const e = require("express");
 require("dotenv").config();
+let usersCollection;
+
+userApp.use((req, res, next) => {
+    usersCollection = req.app.get("usersCollection");
+    next();
+});
 
 userApp.post("/register", expressAsyncHandler(async (req, res) => {
     const data = req.body;
-    console.log(data);
+    const result = await usersCollection.insertOne(data);
+    res.send(result);
 }))
 
 
