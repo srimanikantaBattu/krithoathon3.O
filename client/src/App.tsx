@@ -4,6 +4,7 @@ import LandingPage from "./pages/LandingPage";
 import RootLayout from "./root";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
+import LocationTracker from "./pages/LocationTrack";
 function App() {
   const router = createBrowserRouter([
     {
@@ -20,6 +21,9 @@ function App() {
     {
       path:"/login",
       element:<Login/>
+    },{
+      path:"/location-track",
+      element:<LocationTracker/>
     }
   ])
   return (
