@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import RootLayout from "./root";
 import Register from "./pages/Auth/Register";
-import LocationTracker from "./pages/LocationTrack";
+import Login from "./pages/Auth/Login";
 function App() {
   const router = createBrowserRouter([
     {
@@ -16,9 +16,10 @@ function App() {
     {
       path:"/register",
       element:<Register/>
-    },{
-      path:"/location-track",
-      element:<LocationTracker/>
+    },
+    {
+      path:"/login",
+      element:<Login/>
     }
   ])
   return (

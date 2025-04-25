@@ -19,5 +19,35 @@ userApp.post("/register", expressAsyncHandler(async (req, res) => {
     res.send(result);
 }))
 
+userApp.post("/login", expressAsyncHandler(async (req, res) => {
+    const { email } = req.body
+    
+    if (!email) {
+        return res.status(400).send({ 
+            success: false,
+            message: "Email and userType are required" 
+        });
+    }
+
+    const user = await usersCollection.findOne({ email });
+    
+    if (!user) {
+        return res.status(401).send({ 
+            success: false,
+            message: "Invalid email or user type" 
+        });
+    }
+    return res.send({ 
+        success: true,
+        message: "Login successful",
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            userType: user.userType,
+        }
+    });
+}));
+
 
 module.exports = userApp;
