@@ -1,89 +1,3 @@
-// const exp = require("express");
-// const userApp = exp.Router();
-// const bcryptjs = require("bcryptjs");
-// const expressAsyncHandler = require("express-async-handler");
-// const jwt = require("jsonwebtoken");
-// const nodemailer = require("nodemailer");
-// const e = require("express");
-// require("dotenv").config();
-// let usersCollection;
-
-// userApp.use((req, res, next) => {
-//     usersCollection = req.app.get("usersCollection");
-//     next();
-// });
-
-// userApp.post("/register", expressAsyncHandler(async (req, res) => {
-//     const data = req.body;
-//     const result = await usersCollection.insertOne(data);
-//     res.send(result);
-// }))
-
-// userApp.post("/login", expressAsyncHandler(async (req, res) => {
-//     const { email } = req.body
-    
-//     if (!email) {
-//         return res.status(400).send({ 
-//             success: false,
-//             message: "Email and userType are required" 
-//         });
-//     }
-
-//     const user = await usersCollection.findOne({ email });
-    
-//     if (!user) {
-//         return res.status(401).send({ 
-//             success: false,
-//             message: "Invalid email or user type" 
-//         });
-//     }
-//     return res.send({ 
-//         success: true,
-//         message: "Login successful",
-//         user: {
-//             _id: user._id,
-//             name: user.name,
-//             email: user.email,
-//             userType: user.userType,
-//         }
-//     });
-// }));
-
-// // Add this route to fetch accepted requests for agents
-// userApp.get(
-//     "/accepted-requests/:agentId",
-//     expressAsyncHandler(async (req, res) => {
-//       const agentId = req.params.agentId;
-  
-//       try {
-//         // Find the agent by ID
-//         const agent = await usersCollection.findOne({ _id: agentId, userType: "agent" });
-  
-//         if (!agent) {
-//           return res.status(404).send({
-//             success: false,
-//             message: "Agent not found",
-//           });
-//         }
-  
-//         // Return the acceptedRequests array from the agent's document
-//         res.send({
-//           success: true,
-//           acceptedRequests: agent.acceptedRequests || [],
-//         });
-//       } catch (error) {
-//         res.status(500).send({
-//           success: false,
-//           message: "Internal server error",
-//           error: error.message,
-//         });
-//       }
-//     })
-//   );
-
-// module.exports = userApp;
-
-
 const exp = require("express");
 const userApp = exp.Router();
 const bcryptjs = require("bcryptjs");
@@ -138,6 +52,69 @@ userApp.post("/register", expressAsyncHandler(async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }));
+
+userApp.post("/login", expressAsyncHandler(async (req, res) => {
+  const { email } = req.body
+  
+  if (!email) {
+      return res.status(400).send({ 
+          success: false,
+          message: "Email and userType are required" 
+      });
+  }
+
+  const user = await usersCollection.findOne({ email });
+  
+  if (!user) {
+      return res.status(401).send({ 
+          success: false,
+          message: "Invalid email or user type" 
+      });
+  }
+  return res.send({ 
+      success: true,
+      message: "Login successful",
+      user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          userType: user.userType,
+      }
+  });
+}));
+
+// Add this route to fetch accepted requests for agents
+userApp.get(
+  "/accepted-requests/:agentId",
+  expressAsyncHandler(async (req, res) => {
+    const agentId = req.params.agentId;
+
+    try {
+      // Find the agent by ID
+      const agent = await usersCollection.findOne({ _id: agentId, userType: "agent" });
+
+      if (!agent) {
+        return res.status(404).send({
+          success: false,
+          message: "Agent not found",
+        });
+      }
+
+      // Return the acceptedRequests array from the agent's document
+      res.send({
+        success: true,
+        acceptedRequests: agent.acceptedRequests || [],
+      });
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  })
+);
+
 
 // Get all users - will be used to fetch agents on the frontend
 userApp.get("/allusers", expressAsyncHandler(async (req, res) => {
