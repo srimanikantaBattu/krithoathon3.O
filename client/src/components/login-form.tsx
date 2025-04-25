@@ -37,7 +37,7 @@ export function LoginForm({
         // Store user data in localStorage
         localStorage.setItem('email',response.data.user.email)
         localStorage.setItem('userType',response.data.user.userType)
-        
+        localStorage.setItem('userId',response.data.user._id)
         // Redirect based on user type
         if (response.data.user.userType === 'buyer') {
           navigate('/')

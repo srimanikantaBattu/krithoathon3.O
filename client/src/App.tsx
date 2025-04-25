@@ -5,6 +5,9 @@ import RootLayout from "./root";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
 import LocationTracker from "./pages/LocationTrack";
+import AgentAcceptedRequests from "./pages/Agent/Accepted";
+import SourcingAgentsPage from "./pages/Agent/SourcingAgent";
+import AgentProfile from "./pages/Agent/ProfilePage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -21,9 +24,22 @@ function App() {
     {
       path:"/login",
       element:<Login/>
-    },{
+    },
+    {
       path:"/location-track",
       element:<LocationTracker/>
+    },
+    {
+      path:"/accepted-requests",
+      element:<AgentAcceptedRequests/>
+    },
+    {
+      path:"/agents",
+      element:<SourcingAgentsPage/>
+    },
+    {
+      path:"/agent/:id",
+      element:<AgentProfile/>
     }
   ])
   return (
